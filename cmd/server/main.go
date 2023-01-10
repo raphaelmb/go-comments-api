@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/raphaelmb/go-comments-api/internal/comment"
 	db "github.com/raphaelmb/go-comments-api/internal/database"
 )
 
@@ -15,10 +16,15 @@ func Run() error {
 		fmt.Println("Failed to connect to the database")
 		return err
 	}
-	if err := db.Ping(context.Background()); err != nil {
+
+	if err := db.MigrateDB(); err != nil {
+		fmt.Println("failed to migrate database")
 		return err
 	}
-	fmt.Println("successfully connected and pinged database")
+
+	cmtService := comment.NewService(db)
+	fmt.Println(cmtService.GetComment(context.Background(), "35bc94f8-5624-49de-809a-289c83768259"))
+
 	return nil
 }
 
