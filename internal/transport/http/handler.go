@@ -22,6 +22,7 @@ func NewHandler(service CommentService) *Handler {
 		Service: service,
 	}
 	h.Router = chi.NewRouter()
+	h.Router.Use(JSONMiddleware, LoggingMiddleware)
 	h.mapRoutes()
 
 	h.Server = &http.Server{
