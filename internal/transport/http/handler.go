@@ -22,7 +22,7 @@ func NewHandler(service CommentService) *Handler {
 		Service: service,
 	}
 	h.Router = chi.NewRouter()
-	h.Router.Use(JSONMiddleware, LoggingMiddleware)
+	h.Router.Use(JSONMiddleware, LoggingMiddleware, TimeoutMiddleware)
 	h.mapRoutes()
 
 	h.Server = &http.Server{
@@ -35,10 +35,10 @@ func NewHandler(service CommentService) *Handler {
 
 func (h *Handler) mapRoutes() {
 	h.Router.Route("/api/v1/comment", func(r chi.Router) {
-		r.Post("/", h.PostComment)
+		r.Post("/", JWTAuth(h.PostComment))
 		r.Get("/{id}", h.GetComment)
-		r.Put("/{id}", h.UpdateComment)
-		r.Delete("/{id}", h.DeleteComment)
+		r.Put("/{id}", JWTAuth(h.UpdateComment))
+		r.Delete("/{id}", JWTAuth(h.DeleteComment))
 	})
 }
 
