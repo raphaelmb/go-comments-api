@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/raphaelmb/go-comments-api/internal/comment"
-	db "github.com/raphaelmb/go-comments-api/internal/database"
+	"github.com/raphaelmb/go-comments-api/internal/db"
 	transportHttp "github.com/raphaelmb/go-comments-api/internal/transport/http"
 )
 
